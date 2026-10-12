@@ -1,13 +1,10 @@
-//
-//  HandwritingTestView.swift
-//  Dysgraphia App
-//
-//  Created by Prisha Mishra on 9/27/26.
-//
-
 import SwiftUI
 
 struct HandwritingTestView: View {
+    @State private var canvas = HandwritingCanvasController()
+    @State private var capture: HandwritingCapture?
+    @State private var showAnalysis = false
+
     var body: some View {
         VStack(spacing: 20) {
             Text("Handwriting Test")
@@ -21,31 +18,51 @@ struct HandwritingTestView: View {
                 .font(.headline)
                 .multilineTextAlignment(.center)
 
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.gray, lineWidth: 2)
+            // Writing area
+            HandwritingCanvas(controller: canvas)
                 .frame(height: 300)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay {
-                    Text("Writing Area")
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray, lineWidth: 2)
+                }
+                .overlay {
+                    if !canvas.hasWriting {
+                        Text(
+                            allowsFingerWriting
+                                ? "Write here using Apple Pencil or your finger"
+                                : "Write here using Apple Pencil"
+                        )
                         .foregroundStyle(.secondary)
+                        .allowsHitTesting(false)
+                        .padding()
+                    }
                 }
 
             HStack {
                 Button("Clear") {
-                    //
+                    canvas.clear()
                 }
 
                 Spacer()
 
-                NavigationLink(destination: AnalysisView()) {
-                    Text("Done")
-                        .fontWeight(.semibold)
+                Button("Done") {
+                    capture = canvas.capture()
+                    showAnalysis = true
                 }
+                .fontWeight(.semibold)
+                .disabled(!canvas.hasWriting)
             }
 
             Spacer()
         }
         .padding()
         .navigationTitle("Handwriting Test")
+        .navigationDestination(isPresented: $showAnalysis) {
+            if let capture {
+                AnalysisView(capture: capture)
+            }
+        }
     }
 }
 
