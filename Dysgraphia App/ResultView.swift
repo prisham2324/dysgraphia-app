@@ -1,13 +1,8 @@
-//
-//  ResultView.swift
-//  Dysgraphia App
-//
-//  Created by Prisha Mishra on 9/27/26.
-//
-
 import SwiftUI
 
 struct ResultView: View {
+    let capture: HandwritingCapture
+
     var body: some View {
         VStack(spacing: 25) {
             Image(systemName: "checkmark.circle.fill")
@@ -18,12 +13,16 @@ struct ResultView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
-            Text("No significant concerns detected in this screening.")
+            Text("Your handwriting sample has been collected.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
 
+            Text("Recorded strokes: \(capture.strokes.count)")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
             Button("Save Record") {
-                // add SwiftData saving later
+                // SwiftData saving will be added later.
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -32,7 +31,7 @@ struct ResultView: View {
             .cornerRadius(12)
 
             Button("Download Test Data") {
-                // add downloading later
+                // Data export will be added later.
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -59,6 +58,6 @@ struct ResultView: View {
 
 #Preview {
     NavigationStack {
-        ResultView()
+        ResultView(capture: .preview)
     }
 }

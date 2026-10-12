@@ -1,13 +1,8 @@
-//
-//  AnalysisView.swift
-//  Dysgraphia App
-//
-//  Created by Prisha Mishra on 9/27/26.
-//
-
 import SwiftUI
 
 struct AnalysisView: View {
+    let capture: HandwritingCapture
+
     var body: some View {
         VStack(spacing: 25) {
             Spacer()
@@ -26,7 +21,7 @@ struct AnalysisView: View {
             ProgressView()
                 .padding()
 
-            NavigationLink(destination: ResultView()) {
+            NavigationLink(destination: ResultView(capture: capture)) {
                 Text("Continue")
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -45,6 +40,6 @@ struct AnalysisView: View {
 
 #Preview {
     NavigationStack {
-        AnalysisView()
+        AnalysisView(capture: .preview)
     }
 }
