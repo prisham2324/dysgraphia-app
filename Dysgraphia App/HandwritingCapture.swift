@@ -77,7 +77,7 @@ final class TouchRecorder: UIGestureRecognizer,
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        super.init(target: nil, action: nil)
         configure()
     }
 
